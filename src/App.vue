@@ -12,7 +12,7 @@
 		name: 'app',
 		data () {
 			return {
-				msg: 'hello webpack',
+				msg: 'hello webpack123',
 				imgUrl
 			}
 		}
