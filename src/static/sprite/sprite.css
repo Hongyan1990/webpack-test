@@ -1,0 +1,6 @@
+.icon {display: inline-block; vertical-align: middle; background-image: url(./sprite.png)}
+.icon-cz {width: 32px; height: 32px; background-position: 0px 0px;}
+.icon-medf {width: 32px; height: 32px; background-position: 0px -42px;}
+.icon-sy {width: 32px; height: 32px; background-position: 0px -84px;}
+.icon-xhy {width: 32px; height: 32px; background-position: 0px -126px;}
+.icon-xn {width: 32px; height: 32px; background-position: 0px -168px;}
