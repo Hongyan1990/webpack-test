@@ -3,31 +3,36 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const HTMLPlugin = require('html-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const SpritesmithPlugin = require('webpack-spritesmith');
-const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin')
+// const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin')
+const DllReferencePlugin = require('webpack/lib/DllReferencePlugin')
 
-const spriteTemplate = require('./sprite.js')
+const spriteTemplate = require('../sprite.js')
 
 module.exports = {
-	mode: 'none',
-	entry: ['webpack-hot-middleware/client','./src/main.js'],
+	// entry: ['webpack-hot-middleware/client','./src/main.js'],
 	output: {
 		filename: 'bundle.js',
-		path: path.resolve(__dirname, './dist')
+		path: path.resolve(__dirname, '../dist')
 	},
 	resolve: {
 		// webpack在引入无后缀的文件时，默认匹配的后缀名  源码中尽量带上后缀 减少构建时的搜索
 		extensions: ['.vue', '.js'],
 		// webpack搜索第三方模块的默认路径
-		modules: [path.resolve(__dirname, 'node_modules')]
+		modules: [path.resolve(__dirname, '../node_modules')]
 	},
 	module: {
 		rules: [
+			{
+				test: /\.js$/,
+				use: ['babel-loader'],
+				exclude: /node_modules/
+			},
 			{
 				test: /\.vue$/,
 				use: ['vue-loader']
 			},
 			{
-				test: /\.css$/,
+			  test: /\.css$/,
 				use: ['style-loader', 'css-loader']
 			},
 			{
@@ -43,24 +48,26 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new CleanWebpackPlugin(),
+		new CleanWebpackPlugin({
+			cleanOnceBeforeBuildPatterns: ['**/*', '!vue.*']
+		}),
 		new VueLoaderPlugin(),
 		new HTMLPlugin({
 			title: 'hello webpack',
-			template: './src/index.html'
+			template:  path.join(__dirname, 'template.html')
 		}),
-		new HotModuleReplacementPlugin(),
+		// new HotModuleReplacementPlugin(),
 		// 雪碧图
 		new SpritesmithPlugin({
 			src: {
-				cwd: path.resolve(__dirname, 'src/static/icon'), // 雪碧图引入的路径
+				cwd: path.resolve(__dirname, '../src/static/icon'), // 雪碧图引入的路径
 				glob: '*.png' // 图片类型
 			},
 			target: {
-				image: path.resolve(__dirname, 'src/static/sprite/sprite.png'), // 雪碧图生成后导出的路径
+				image: path.resolve(__dirname, '../src/static/sprite/sprite.png'), // 雪碧图生成后导出的路径
 				css: [
 					[
-						path.resolve(__dirname, 'src/static/sprite/sprite.css'), // css的导出路径
+						path.resolve(__dirname, '../src/static/sprite/sprite.css'), // css的导出路径
 						{
 							format: "function_based_tempalte" // css的生成模板
 						}
@@ -77,7 +84,11 @@ module.exports = {
 				algorithm: 'top-down', // 雪碧图生成排列方式
 				padding: 10
 			}
+		}),
+		// 动态连接库 避免模块的多次打包 缩短编译时间
+		new DllReferencePlugin({
+			manifest: require('../dist/vue.manifest.json')
 		})
 	],
-	devtool: 'source-map'
+	
 }

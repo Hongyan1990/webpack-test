@@ -19,7 +19,7 @@
 		name: 'app',
 		data () {
 			return {
-				msg: 'hello webpack123',
+				msg: 'hello webpack !',
 				imgUrl
 			}
 		}
@@ -28,7 +28,7 @@
 
 <style>
 	h2 {
-		color: yellow;
+		color: red;
 		font-size: 15px;
 		width: 100px;
 		height:100px;
