@@ -2,17 +2,24 @@
 	<div>
 		<h2>{{msg}}</h2>
 		<img :src="imgUrl">
+		<span class="icon icon-cz"></span>
+		<span class="icon icon-sy"></span>
+		<span class="icon icon-xhy"></span>
+		<span class="icon icon-xn"></span>
+		<span class="icon icon-medf"></span>
 	</div>
 	
 </template>
 
 <script>
 	import imgUrl from './static/jizita.png'
+	import './static/sprite/sprite.css'
+
 	export default {
 		name: 'app',
 		data () {
 			return {
-				msg: 'hello webpack123',
+				msg: 'hello webpack !',
 				imgUrl
 			}
 		}
@@ -21,7 +28,7 @@
 
 <style>
 	h2 {
-		color: yellow;
+		color: red;
 		font-size: 15px;
 		width: 100px;
 		height:100px;
