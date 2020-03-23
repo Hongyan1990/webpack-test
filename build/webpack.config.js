@@ -3,13 +3,13 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const HTMLPlugin = require('html-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const SpritesmithPlugin = require('webpack-spritesmith');
+const HappyPack = require('happypack')
 // const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin')
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin')
-
 const spriteTemplate = require('../sprite.js')
 
 module.exports = {
-	// entry: ['webpack-hot-middleware/client','./src/main.js'],
+	entry: path.resolve(__dirname,'../src/main.js'),
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, '../dist')
@@ -24,17 +24,14 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
-				use: ['babel-loader'],
+				use: 'happypack/loader?id=happy-babel-js',
 				exclude: /node_modules/
 			},
 			{
 				test: /\.vue$/,
-				use: ['vue-loader']
+				use: 'happypack/loader?id=happy-vue-loader'
 			},
-			{
-			  test: /\.css$/,
-				use: ['style-loader', 'css-loader']
-			},
+			
 			{
 				test: /\.(jpg|jpeg|png|gif|svg)$/,
 				use: [{
@@ -51,11 +48,20 @@ module.exports = {
 		new CleanWebpackPlugin({
 			cleanOnceBeforeBuildPatterns: ['**/*', '!vue.*']
 		}),
-		new VueLoaderPlugin(),
+		
 		new HTMLPlugin({
 			title: 'hello webpack',
 			template:  path.join(__dirname, 'template.html')
 		}),
+		new HappyPack({
+			id: 'happy-babel-js',
+			loaders: ['babel-loader']
+		}),
+		new HappyPack({
+			id: 'happy-vue-loader',
+			loaders: ['vue-loader']
+		}),
+		new VueLoaderPlugin(),
 		// new HotModuleReplacementPlugin(),
 		// 雪碧图
 		new SpritesmithPlugin({

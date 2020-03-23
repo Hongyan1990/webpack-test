@@ -5,7 +5,17 @@ const baseConfig = require('./webpack.config.js')
 
 const config = merge(baseConfig, {
 	mode: 'development',
-	entry: ['webpack-hot-middleware/client',path.resolve(__dirname,'../src/main.js')],
+	devServer: {
+		hot: true
+	},
+	module: {
+		rules: [
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
+			}
+		]
+	},
 	plugins: [
 		new HotModuleReplacementPlugin(),
 	],
