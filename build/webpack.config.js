@@ -18,7 +18,8 @@ module.exports = {
 		// webpack在引入无后缀的文件时，默认匹配的后缀名  源码中尽量带上后缀 减少构建时的搜索
 		extensions: ['.vue', '.js'],
 		// webpack搜索第三方模块的默认路径
-		modules: [path.resolve(__dirname, '../node_modules')]
+		modules: [path.resolve(__dirname, '../node_modules')],
+		mainFields: ['jsnext:main', 'browser', 'main']
 	},
 	module: {
 		rules: [
