@@ -29,7 +29,7 @@ module.exports = {
 			},
 			{
 				test: /\.vue$/,
-				use: 'happypack/loader?id=happy-vue-loader'
+				use: 'vue-loader'
 			},
 			
 			{
@@ -55,12 +55,12 @@ module.exports = {
 		}),
 		new HappyPack({
 			id: 'happy-babel-js',
-			loaders: ['babel-loader']
+			loaders: ['babel-loader?cacheDirectory=true']
 		}),
-		new HappyPack({
-			id: 'happy-vue-loader',
-			loaders: ['vue-loader']
-		}),
+		// new HappyPack({
+		// 	id: 'happy-vue-loader',
+		// 	loaders: ['vue-loader']
+		// }),
 		new VueLoaderPlugin(),
 		// new HotModuleReplacementPlugin(),
 		// 雪碧图

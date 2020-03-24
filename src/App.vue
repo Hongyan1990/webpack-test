@@ -31,7 +31,7 @@
 
 <style>
 	h2 {
-		color: pink;
+		color: red;
 		font-size: 15px;
 		width: 100px;
 		height:100px;
