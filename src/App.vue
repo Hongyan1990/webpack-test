@@ -1,7 +1,10 @@
 <template>
 	<div>
 		<h2>{{msg}}</h2>
-		<img :src="imgUrl">
+		<div v-for="(img, index) in imgs" :key="index">
+			<img :src="img">
+		</div>
+		
 		<span class="icon icon-cz"></span>
 		<span class="icon icon-sy"></span>
 		<span class="icon icon-xhy"></span>
@@ -20,7 +23,7 @@
 		data () {
 			return {
 				msg: 'hello webpack1234 !',
-				imgUrl
+				imgs: [imgUrl, imgUrl, imgUrl]
 			}
 		}
 	}
