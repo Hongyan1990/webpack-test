@@ -6,6 +6,9 @@ const SpritesmithPlugin = require('webpack-spritesmith');
 const HappyPack = require('happypack')
 // const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin')
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin')
+
+const EndWebpackPlugin = require('./end-webpack-plugin');
+
 const spriteTemplate = require('../sprite.js')
 
 module.exports = {
@@ -95,7 +98,10 @@ module.exports = {
 		// 动态连接库 避免模块的多次打包 缩短编译时间
 		new DllReferencePlugin({
 			manifest: require('../dist/vue.manifest.json')
-		})
+		}),
+		new EndWebpackPlugin(() => {
+			console.log('------------------自定义插件执行成功-------------------')
+		}, err => {})
 	],
 	
 }
