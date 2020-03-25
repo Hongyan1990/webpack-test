@@ -9,6 +9,10 @@ module.exports = {
 				test: /\.js$/,
 				exclude: /node_modules/,
 				use: ['babel-loader?cacheDirectory=true']
+			},
+			{
+				test: /\.vue$/,
+				use: ['vue-loader']
 			}
 		]
 	},
