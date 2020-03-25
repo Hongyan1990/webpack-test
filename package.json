@@ -9,7 +9,8 @@
     "dev": "webpack-dev-server --colors --config ./build/webpack.config.dev.js",
     "dll": "webpack --colors --config ./build/webpack_dll.config.js",
     "analyz": "webpack --colors --config ./build/webpack.config.analyz.js",
-    "speed": "webpack --colors --config  ./build/webpack.config.speed.js"
+    "speed": "webpack --colors --config  ./build/webpack.config.speed.js",
+    "server": "webpack --color --config ./build/webpack.config.server.js"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +42,8 @@
     "webpack-spritesmith": "^1.1.0"
   },
   "dependencies": {
-    "vue": "^2.6.11"
+    "koa": "^2.11.0",
+    "vue": "^2.6.11",
+    "vue-server-renderer": "^2.6.11"
   }
 }
