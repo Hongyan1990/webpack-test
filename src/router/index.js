@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import PageA from '../views/PageA.vue'
-import PageB from '../views/PageB.vue'
+// import PageA from '../views/PageA.vue'
+// import PageB from '../views/PageB.vue'
 
 Vue.use(Router)
 
@@ -11,12 +11,16 @@ export function createRouter() {
 		mode: 'history',
 		routes: [
 			{
+		    path: '/',
+		    redirect: '/a'
+		  },
+			{
 				path: '/a',
-				component: PageA
+				component: () => import('../views/PageA.vue')
 			},
 			{
 				path: '/b',
-				component: PageB
+				component: () => import('../views/PageB.vue')
 			}
 		]
 	})
