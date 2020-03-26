@@ -1,8 +1,12 @@
 <template>
 	<div>
 		hello SSR
+		<div>
+			<router-link to="/a">GO to A</router-link>
+			<router-link to="/b">GO to B</router-link>
+		</div>
+		<router-view></router-view>
 	</div>
-	
 </template>
 
 <script>
