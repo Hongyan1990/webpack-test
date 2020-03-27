@@ -12,11 +12,17 @@ export function createRouter() {
 		routes: [
 			{
 		    path: '/',
-		    redirect: '/a'
+		    redirect: '/b'
 		  },
 			{
-				path: '/a',
-				component: () => import('../views/PageA.vue')
+				path: '/a/:id',
+				component: () => import('../views/PageA.vue'),
+				// children: [
+				// 	{
+				// 		path: 'c/:id',
+				// 		component: () => import('../views/PageA1.vue'),
+				// 	}
+				// ]
 			},
 			{
 				path: '/b',

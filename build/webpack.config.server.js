@@ -1,34 +1,20 @@
 const path = require('path')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const merge = require('webpack-merge')
+const nodeExternals = require('webpack-node-externals')
+const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
+const config = require('./webpack.config.base.js')
 
-module.exports = {
+module.exports = merge(config, {
 	target: 'node',
 	entry: path.resolve(__dirname, '../src/entry-server.js'),
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				use: ['babel-loader']
-			},
-			{
-				test: /\.vue$/,
-				use: ['vue-loader']
-			},
-			{
-				test: /\.css$/,
-				use: ['vue-style-loader', 'css-loader']
-			}
-		]
-	},
+	
 	output: {
-		filename: '[name].js',
-		libraryTarget: 'commonjs2',
-		path: path.resolve(__dirname, '../dist')
+		libraryTarget: 'commonjs2'
 	},
+	externals: nodeExternals({
+		whitelist: /\.css$/
+	}),
 	plugins: [
-		new CleanWebpackPlugin(),
-		new VueLoaderPlugin()
+		new VueSSRServerPlugin()
 	] 
-}
+})

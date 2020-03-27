@@ -2,7 +2,8 @@
 	<div>
 		hello SSR
 		<div>
-			<router-link to="/a">GO to A</router-link>
+			<router-link to="/a/1">GO to A-1</router-link>
+			<router-link to="/a/2">GO to A-2</router-link>
 			<router-link to="/b">GO to B</router-link>
 		</div>
 		<router-view></router-view>

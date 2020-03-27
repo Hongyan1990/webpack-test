@@ -1,10 +1,10 @@
 <template>
-	<div>PageB: {{item.content}}</div>
+	<div>PageA-2: {{item.content}}</div>
 </template>
 
 <script>
 	export default {
-		name: 'pageB',
+		name: 'pageA',
 		asyncData (store) {
 			return store.dispatch('fetchItem', '5e7d6f2961b440387a4822c2')
 		},

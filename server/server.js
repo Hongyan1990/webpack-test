@@ -1,29 +1,59 @@
 const path = require('path')
 const Koa = require('koa')
 const Vue = require('vue')
-const createApp = require('../dist/main.js').default
-const renderer = require('vue-server-renderer').createRenderer({
-	template: require('fs').readFileSync(path.resolve(__dirname, '../src/index.template.html'), 'utf-8')
-})
-const db = require('./db.js')
-const server = new Koa()
+const send = require('koa-send')
+const { createBundleRenderer } = require('vue-server-renderer')
+// const createApp = require('../dist/main.js').default
+const template = require('fs').readFileSync(path.resolve(__dirname, '../src/index.template.html'), 'utf-8')
 
+const serverBundle = require('../dist/vue-ssr-server-bundle.json')
+const clientManifest = require('../dist/vue-ssr-client-manifest.json')
+// const renderer = require('vue-server-renderer').createRenderer(serverBundle, {
+// 	runInNewContext: false, 
+// 	template,
+// 	clientManifest
+// })
+
+const renderer = createBundleRenderer(serverBundle, {
+	runInNewContext: false, 
+	template,
+	clientManifest
+})
+
+// const db = require('./db.js')
+const server = new Koa()
+const PATHREG = /^\/dist\//
 server.use(async (ctx, next) => {
 	const context = {url: ctx.url}
-	// console.log(app)
-	// const app = new Vue({
-	// 	template: '<div>hello</div>'
+	if(ctx.url === '/favicon.ico')return;
+	if(PATHREG.test(ctx.url)) {
+		await send(ctx, ctx.path)
+		return
+	}
+	// renderer.renderToString(context, (err, html) => {
+	// 	if(err) {
+	// 		console.log(err)
+	// 		return
+	// 	}
+	// 	console.log(html)
+	// 	ctx.body = html
 	// })
-	const list = await db.getTodos()
-	console.log(list)
 	try {
-		const app = await createApp(context)
-		const html = await renderer.renderToString(app)
-		// console.log(html)
+		// const app = await createApp(context)
+		const html = await renderer.renderToString(context)
 		ctx.body = html
+
+		// renderer.renderToString(context, (err, html) => {
+		// 	if(err) {
+		// 		console.log(err)
+		// 		return
+		// 	}
+		// 	ctx.body = html
+		// })
 	} catch (e) {
-		ctx.body = JSON.stringify(list)
-		console.log('e--' + e.code)
+		// console.log('------start4------')
+		// ctx.body = JSON.stringify(e)
+		console.log(e.code)
 	}
 	
 	// createApp(context).then(app => {
