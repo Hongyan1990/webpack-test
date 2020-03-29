@@ -3,8 +3,13 @@
 </template>
 
 <script>
+  import titleMixin from '../title.mixin.js' 
 	export default {
 		name: 'pageB',
+		mixins: [titleMixin],
+		title () {
+			return this.item.content
+		},
 		asyncData (store) {
 			return store.dispatch('fetchItem', '5e7d6f2961b440387a4822c2')
 		},

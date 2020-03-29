@@ -7,7 +7,7 @@ const config = require('./webpack.config.base.js')
 module.exports = merge(config, {
 	entry: path.resolve(__dirname, '../src/entry-client.js'),
 	optimization: {
-      	runtimeChunk: 'single',
+      runtimeChunk: 'single',
 	    splitChunks: {
 	       cacheGroups: {
 	        vendor: {
@@ -19,6 +19,7 @@ module.exports = merge(config, {
 	     },
     },
 	plugins: [
-		new VueSSRClientPlugin()
+		new VueSSRClientPlugin(),
+		new webpack.DefinePlugin({ "process.env.VUE_ENV": JSON.stringify("client") })
 	]
 })

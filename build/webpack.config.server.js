@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const merge = require('webpack-merge')
 const nodeExternals = require('webpack-node-externals')
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
@@ -15,6 +16,7 @@ module.exports = merge(config, {
 		whitelist: /\.css$/
 	}),
 	plugins: [
-		new VueSSRServerPlugin()
+		new VueSSRServerPlugin(),
+		new webpack.DefinePlugin({ "process.env.VUE_ENV": JSON.stringify("server") })
 	] 
 })

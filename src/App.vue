@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="my-ssr">
 		hello SSR
 		<div>
 			<router-link to="/a/1">GO to A-1</router-link>
@@ -25,12 +25,8 @@
 </script>
 
 <style>
-	/* h2 {
-	 	color: red;
-	 	font-size: 15px;
-	 	width: 100px;
-	 	height:100px;
-	 	background-image: url('./static/webpack.jpg');
-	 	background-size: cover;
-	 }*/
+	.my-ssr {
+		font-size: 18px;
+		color: skyblue;
+	}
 </style>

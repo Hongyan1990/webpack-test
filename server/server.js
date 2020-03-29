@@ -24,7 +24,7 @@ const renderer = createBundleRenderer(serverBundle, {
 const server = new Koa()
 const PATHREG = /^\/dist\//
 server.use(async (ctx, next) => {
-	const context = {url: ctx.url}
+	const context = {url: ctx.url, title: 'hello ssr'}
 	if(ctx.url === '/favicon.ico')return;
 	if(PATHREG.test(ctx.url)) {
 		await send(ctx, ctx.path)
