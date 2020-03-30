@@ -5,6 +5,7 @@
 			<router-link to="/a/1">GO to A-1</router-link>
 			<router-link to="/a/2">GO to A-2</router-link>
 			<router-link to="/b">GO to B</router-link>
+			<router-link to="/c">GO to C</router-link>
 		</div>
 		<router-view></router-view>
 	</div>

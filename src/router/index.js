@@ -27,6 +27,10 @@ export function createRouter() {
 			{
 				path: '/b',
 				component: () => import('../views/PageB.vue')
+			},
+			{
+				path: '/c',
+				component: () => import('../views/PageC.vue')
 			}
 		]
 	})
