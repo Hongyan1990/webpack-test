@@ -2,6 +2,7 @@ const path = require('path')
 const Koa = require('koa')
 const Vue = require('vue')
 const send = require('koa-send')
+const LRU = require('lru-cache')
 const { createBundleRenderer } = require('vue-server-renderer')
 // const createApp = require('../dist/main.js').default
 const template = require('fs').readFileSync(path.resolve(__dirname, '../src/index.template.html'), 'utf-8')
@@ -14,6 +15,15 @@ const clientManifest = require('../dist/vue-ssr-client-manifest.json')
 // 	clientManifest
 // })
 
+// const microCache = new LRU({
+// 	max: 100,
+// 	maxAge: 1000 * 60
+// })
+
+// const isCacheable = (req) => {
+// 	return req.url === '/c' ? true : false
+// }
+
 const renderer = createBundleRenderer(serverBundle, {
 	runInNewContext: false, 
 	template,
@@ -25,11 +35,21 @@ const server = new Koa()
 const PATHREG = /^\/dist\//
 server.use(async (ctx, next) => {
 	const context = {url: ctx.url, title: 'hello ssr'}
+	const cacheAble = isCacheable(ctx)
 	if(ctx.url === '/favicon.ico')return;
 	if(PATHREG.test(ctx.url)) {
 		await send(ctx, ctx.path)
 		return
 	}
+	// if(cacheAble) {
+	// 	const hit = microCache.get(ctx.url)
+	// 	if(hit) {
+	// 		console.log('--------hit--------')
+	// 		ctx.body = hit
+	// 		return
+	// 	}
+		
+	// }
 	// renderer.renderToString(context, (err, html) => {
 	// 	if(err) {
 	// 		console.log(err)
@@ -41,7 +61,11 @@ server.use(async (ctx, next) => {
 	try {
 		// const app = await createApp(context)
 		const html = await renderer.renderToString(context)
+
 		ctx.body = html
+		// if(cacheAble) {
+		// 	microCache.set(ctx.url, html)
+		// }
 
 		// renderer.renderToString(context, (err, html) => {
 		// 	if(err) {

@@ -4,10 +4,10 @@ export default context => {
 	return new Promise((resolve, reject) => {
 		const {app, router, store} = createApp()
 		router.push(context.url)
-		console.log(context.url)
+		// console.log(context.url)
 		router.onReady(() => {
 			const matchedComponents = router.getMatchedComponents()
-			console.log(matchedComponents)
+			// console.log(matchedComponents)
 			if(!matchedComponents.length) {
 				return reject({code: 404})
 			}
