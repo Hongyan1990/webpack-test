@@ -4,11 +4,13 @@ const Vue = require('vue')
 const send = require('koa-send')
 const LRU = require('lru-cache')
 const { createBundleRenderer } = require('vue-server-renderer')
-// const createApp = require('../dist/main.js').default
-const template = require('fs').readFileSync(path.resolve(__dirname, '../src/index.template.html'), 'utf-8')
 
-const serverBundle = require('../dist/vue-ssr-server-bundle.json')
-const clientManifest = require('../dist/vue-ssr-client-manifest.json')
+const setupDevServer = require('./setup-dev-server.js')
+// const createApp = require('../dist/main.js').default
+// const template = require('fs').readFileSync(path.resolve(__dirname, '../src/index.template.html'), 'utf-8')
+
+// const serverBundle = require('../dist/vue-ssr-server-bundle.json')
+// const clientManifest = require('../dist/vue-ssr-client-manifest.json')
 // const renderer = require('vue-server-renderer').createRenderer(serverBundle, {
 // 	runInNewContext: false, 
 // 	template,
@@ -24,18 +26,27 @@ const clientManifest = require('../dist/vue-ssr-client-manifest.json')
 // 	return req.url === '/c' ? true : false
 // }
 
-const renderer = createBundleRenderer(serverBundle, {
-	runInNewContext: false, 
-	template,
-	clientManifest
-})
+// const renderer = createBundleRenderer(serverBundle, {
+// 	runInNewContext: false, 
+// 	template,
+// 	clientManifest
+// })
+
 
 // const db = require('./db.js')
 const server = new Koa()
+let renderer 
 const PATHREG = /^\/dist\//
+const readyPromise = setupDevServer(server, path.resolve(__dirname, '../src/index.template.html'), (bundle, options) => {
+	console.log('-----------------4-----------')
+	renderer = createBundleRenderer(bundle, Object.assign(options, {
+		runInNewContext: false
+	}))
+})
+
 server.use(async (ctx, next) => {
 	const context = {url: ctx.url, title: 'hello ssr'}
-	const cacheAble = isCacheable(ctx)
+	// const cacheAble = isCacheable(ctx)
 	if(ctx.url === '/favicon.ico')return;
 	if(PATHREG.test(ctx.url)) {
 		await send(ctx, ctx.path)
@@ -60,9 +71,13 @@ server.use(async (ctx, next) => {
 	// })
 	try {
 		// const app = await createApp(context)
-		const html = await renderer.renderToString(context)
-
-		ctx.body = html
+		// await readyPromise
+		
+		readyPromise.then(async () => {
+			const html = await renderer.renderToString(context)
+			console.log(html)
+			ctx.body = html
+		})
 		// if(cacheAble) {
 		// 	microCache.set(ctx.url, html)
 		// }
@@ -77,7 +92,7 @@ server.use(async (ctx, next) => {
 	} catch (e) {
 		// console.log('------start4------')
 		// ctx.body = JSON.stringify(e)
-		console.log(e.code)
+		console.log('e',e)
 	}
 	
 	// createApp(context).then(app => {
