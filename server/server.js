@@ -27,7 +27,11 @@ const clientManifest = require('../dist/vue-ssr-client-manifest.json')
 const renderer = createBundleRenderer(serverBundle, {
 	runInNewContext: false, 
 	template,
-	clientManifest
+	clientManifest,
+	cache: new LRU({
+		max: 10000,
+		maxAge: 1000 * 60
+	})
 })
 
 // const db = require('./db.js')
@@ -35,7 +39,7 @@ const server = new Koa()
 const PATHREG = /^\/dist\//
 server.use(async (ctx, next) => {
 	const context = {url: ctx.url, title: 'hello ssr'}
-	const cacheAble = isCacheable(ctx)
+	// const cacheAble = isCacheable(ctx)
 	if(ctx.url === '/favicon.ico')return;
 	if(PATHREG.test(ctx.url)) {
 		await send(ctx, ctx.path)
