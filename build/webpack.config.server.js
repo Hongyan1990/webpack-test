@@ -10,7 +10,8 @@ module.exports = merge(config, {
 	entry: path.resolve(__dirname, '../src/entry-server.js'),
 	
 	output: {
-		libraryTarget: 'commonjs2'
+		libraryTarget: 'commonjs2',
+		filename: 'server-bundle.js'
 	},
 	externals: nodeExternals({
 		whitelist: /\.css$/
