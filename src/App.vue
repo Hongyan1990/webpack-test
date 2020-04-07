@@ -29,6 +29,6 @@
 <style>
 	.my-ssr {
 		font-size: 18px;
-		color: red;
+		color: yellow;
 	}
 </style>
